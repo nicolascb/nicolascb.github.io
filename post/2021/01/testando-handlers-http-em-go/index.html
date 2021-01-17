@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <meta name="generator" content="Hugo 0.79.0" />
-  <link rel="canonical" href="/tags/golang/">
+  <link rel="canonical" href="/post/2021/01/testando-handlers-http-em-go/">
 
   
 
@@ -35,7 +35,7 @@
 
   
   
-  <title>golang | Nicolas Barbosa - Golang Developer</title>
+  <title>Testando handlers HTTP em Go | Nicolas Barbosa - Golang Developer</title>
 </head>
 
   <body>
@@ -169,7 +169,7 @@
       
       
       
-      <a href="/post/" >
+      <a href="/post/" aria-current="page">
         <svg class="bookmark-icon" aria-hidden="true" focusable="false" viewBox="0 0 40 50">
           <use xlink:href="#bookmark"></use>
         </svg>
@@ -182,7 +182,7 @@
       
       
       
-      <a href="/tags/" aria-current="page">
+      <a href="/tags/" >
         <svg class="bookmark-icon" aria-hidden="true" focusable="false" viewBox="0 0 40 50">
           <use xlink:href="#bookmark"></use>
         </svg>
@@ -212,36 +212,408 @@
       <div class="main-and-footer">
         <div>
           
-<main id="main">
-  <h1>golang</h1>
-  
-  <input
-    id="search"
-    type="text"
-    placeholder=""
-    aria-label=""
-  />
-  
-  <ul class="patterns-list" id="list">
+  <main id="main">
+    <h1>
+      <svg class="bookmark-icon" aria-hidden="true" viewBox="0 0 40 50" focusable="false">
+        <use xlink:href="#bookmark"></use>
+      </svg>
+      Testando handlers HTTP em Go
+    </h1>
+
+    <div class="date">
+      
+      
+      <strong> </strong>Jan 16, 2021
+      
+        
+      
+    </div>
+
     
-    <li>
-      <h2>
-        <a href="/post/2021/01/testando-handlers-http-em-go/">
-          <svg
-            class="bookmark"
-            aria-hidden="true"
-            viewBox="0 0 40 50"
-            focusable="false"
-          >
-            <use xlink:href="#bookmark"></use>
-          </svg>
-          Testando handlers HTTP em Go
-        </a>
-      </h2>
-    </li>
+      <div class="tags">
+        <strong> </strong>
+        <ul aria-label="">
+          
+            <li>
+              <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
+                <use xlink:href="#tag"></use>
+              </svg>
+              
+              <a href="/tags/testing/">testing</a>
+            </li>
+          
+            <li>
+              <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
+                <use xlink:href="#tag"></use>
+              </svg>
+              
+              <a href="/tags/golang/">golang</a>
+            </li>
+          
+        </ul>
+      </div>
     
-  </ul>
-</main>
+    
+    
+      
+
+  <nav class="toc" aria-labelledby="toc-heading">
+    <h2 id="toc-heading"></h2>
+    <ol>
+      
+        <li>
+          
+          
+          
+          
+          <a href="#introdu%c3%a7%c3%a3o">
+            Introdução
+          </a>
+        </li>
+      
+        <li>
+          
+          
+          
+          
+          <a href="#como-testar-handlers-http-em-go">
+            Como testar handlers http em Go?
+          </a>
+        </li>
+      
+        <li>
+          
+          
+          
+          
+          <a href="#api-de-exemplo">
+            API de exemplo
+          </a>
+        </li>
+      
+        <li>
+          
+          
+          
+          
+          <a href="#primeiro-teste">
+            Primeiro teste
+          </a>
+        </li>
+      
+        <li>
+          
+          
+          
+          
+          <a href="#adicionando-mais-testes">
+            Adicionando mais testes
+          </a>
+        </li>
+      
+        <li>
+          
+          
+          
+          
+          <a href="#conclus%c3%a3o">
+            Conclusão
+          </a>
+        </li>
+      
+    </ol>
+  </nav>
+
+
+    
+
+    <h2 id="introdução">Introdução</h2>
+<p>Lembro que precisei fazer algumas pesquisas para construir testes para a minha primeira API escrita em Go, nesse post vou escrever um breve exemplo de como podemos utilizar o pacote <code>httptest</code> para testar nossos handlers http.</p>
+<h2 id="como-testar-handlers-http-em-go">Como testar handlers http em Go?</h2>
+<p>Para que possamos testar qualquer handler HTTP, precisaremos de uma estrutura capaz de construir e armazenar a resposta do handler, como qual foi o status http respondido, valores no header, body e etc.</p>
+<p>O pacote <code>httptest</code> vai facilitar nosso trabalho com a função <a href="https://golang.org/pkg/net/http/httptest/#NewRecorder"><code>httptest.NewRecorder</code></a>.</p>
+<pre><code class="language-go">// NewRecorder returns an initialized ResponseRecorder.
+func NewRecorder() *ResponseRecorder {
+	return &amp;ResponseRecorder{
+		HeaderMap: make(http.Header),
+		Body:      new(bytes.Buffer),
+		Code:      200,
+	}
+}
+</code></pre>
+<p>Com isso teremos a estrutura <a href="https://golang.org/pkg/net/http/httptest/#ResponseRecorder"><code>httptest.ResponseRecorder</code></a> uma implementação de <a href="https://golang.org/pkg/net/http/#ResponseWriter"><code>http.ResponseWriter</code></a>:</p>
+<pre><code class="language-go">// ResponseRecorder is an implementation of http.ResponseWriter that
+// records its mutations for later inspection in tests.
+type ResponseRecorder struct {
+
+	// Code is the HTTP response code set by WriteHeader.
+	//
+	// Note that if a Handler never calls WriteHeader or Write,
+	// this might end up being 0, rather than the implicit
+	// http.StatusOK. To get the implicit value, use the Result
+	// method.
+	Code int
+
+	// HeaderMap contains the headers explicitly set by the Handler.
+	// It is an internal detail.
+	//
+	// Deprecated: HeaderMap exists for historical compatibility
+	// and should not be used. To access the headers returned by a handler,
+	// use the Response.Header map as returned by the Result method.
+	HeaderMap http.Header
+
+	// Body is the buffer to which the Handler's Write calls are sent.
+	// If nil, the Writes are silently discarded.
+	Body *bytes.Buffer
+
+	// Flushed is whether the Handler called Flush.
+	Flushed bool
+
+	result      *http.Response // cache of Result's return value
+	snapHeader  http.Header    // snapshot of HeaderMap at first Write
+	wroteHeader bool
+}
+</code></pre>
+<h2 id="api-de-exemplo">API de exemplo</h2>
+<p>Na nossa API de exemplo, temos o handler <em><code>/check-is-prime</code></em> que é responsável por responder se um número é primo ou não.</p>
+<p>É esse endpoint que vamos testar.</p>
+<pre><code class="language-go">const (
+    apiAddress = &quot;:8081&quot;
+)
+
+func main() {
+	mux := setupMux()
+	http.ListenAndServe(apiAddress, mux)
+}
+
+func setupMux() *http.ServeMux {
+	mux := http.NewServeMux()
+	mux.HandleFunc(&quot;/check-is-prime&quot;, isPrimeHandler)
+	return mux
+}
+
+// isPrimeHandler imprime na tela se o parâmetro `number` é um número primo ou não
+func isPrimeHandler(w http.ResponseWriter, r *http.Request) {
+	number := r.URL.Query().Get(&quot;number&quot;)
+	n, err := strconv.Atoi(number)
+	if err != nil {
+		// Só podemos aceitar inteiros, vamos invalidar a requisição
+		http.Error(w, &quot;o parâmetro `number` não é um número válido&quot;, http.StatusBadRequest)
+		return
+	}
+
+	fmt.Fprint(w, strconv.FormatBool(isPrime(int64(n))))
+}
+
+func isPrime(n int64) bool {
+	return big.NewInt(n).ProbablyPrime(0)
+}
+
+</code></pre>
+<h2 id="primeiro-teste">Primeiro teste</h2>
+<p>A lógica de nossos testes será bem simples, para cada teste, precisaremos montar a requisição http e informar valores esperados para essa requisição, no nosso caso vamos comparar o status de resposta e também o conteúdo do body.</p>
+<pre><code class="language-go">func Test_IsPrimeHandler(t *testing.T) {
+
+    // É importante isolar a criação do mux para que possamos utilizar
+    // nos testes
+	handler := setupMux()
+
+	type args struct {
+		req *http.Request
+	}
+
+	tests := []struct {
+		name     string
+		args     func(t *testing.T) args
+		wantCode int
+		wantBody string
+	}{
+		{
+			name: &quot;Deve retornar http.StatusBadRequest se número for inválido&quot;,
+			args: func(*testing.T) args {
+				req, err := http.NewRequest(&quot;GET&quot;, &quot;/check-is-prime&quot;, nil)
+				if err != nil {
+					t.Fatalf(&quot;falha em gerar requisição de teste: %s&quot;, err.Error())
+				}
+
+				q := req.URL.Query()
+				q.Add(&quot;number&quot;, &quot;isso_nao_eh_um_numero&quot;)
+				req.URL.RawQuery = q.Encode()
+
+				return args{
+					req: req,
+				}
+			},
+			wantCode: http.StatusBadRequest,
+			wantBody: &quot;o parâmetro `number` não é um número válido\n&quot;,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tArgs := tt.args(t)
+			resp := httptest.NewRecorder()
+			handler.ServeHTTP(resp, tArgs.req)
+
+			if resp.Result().StatusCode != tt.wantCode {
+				t.Fatalf(&quot;código de resposta http diferente do esperado, recebido: %d, esperava-se: %d&quot;, resp.Result().StatusCode, tt.wantCode)
+			}
+
+			if resp.Body.String() != tt.wantBody {
+				t.Fatalf(&quot;body http diferente do esperado, recebido: %s, esperava-se: %s&quot;, resp.Body.String(), tt.wantBody)
+			}
+
+		})
+	}
+}
+
+
+</code></pre>
+<h2 id="adicionando-mais-testes">Adicionando mais testes</h2>
+<p>Agora que já temos a estrutura de tabela para nossos testes, podemos inserir outros casos:</p>
+<pre><code class="language-go">func Test_IsPrimeHandler(t *testing.T) {
+
+    // É importante isolar a criação do mux para que possamos utilizar
+    // nos testes
+	handler := setupMux()
+
+	type args struct {
+		req *http.Request
+	}
+
+	tests := []struct {
+		name     string
+		args     func(t *testing.T) args
+		wantCode int
+		wantBody string
+	}{
+		{
+			name: &quot;Deve retornar http.StatusBadRequest se número for inválido&quot;,
+			args: func(*testing.T) args {
+				req, err := http.NewRequest(&quot;GET&quot;, &quot;/check-is-prime&quot;, nil)
+				if err != nil {
+					t.Fatalf(&quot;falha em gerar requisição de teste: %s&quot;, err.Error())
+				}
+
+				q := req.URL.Query()
+				q.Add(&quot;number&quot;, &quot;isso_nao_eh_um_numero&quot;)
+				req.URL.RawQuery = q.Encode()
+
+				return args{
+					req: req,
+				}
+			},
+			wantCode: http.StatusBadRequest,
+			wantBody: &quot;o parâmetro `number` não é um número válido\n&quot;,
+		},
+		{
+			name: &quot;Deve retornar http.StatusOk e verdadeiro, se número for primo&quot;,
+			args: func(*testing.T) args {
+				req, err := http.NewRequest(&quot;GET&quot;, &quot;/check-is-prime&quot;, nil)
+				if err != nil {
+					t.Fatalf(&quot;falha em gerar requisição de teste: %s&quot;, err.Error())
+				}
+
+				q := req.URL.Query()
+				q.Add(&quot;number&quot;, &quot;7&quot;)
+				req.URL.RawQuery = q.Encode()
+
+				return args{
+					req: req,
+				}
+			},
+			wantCode: http.StatusOK,
+			wantBody: &quot;true&quot;,
+		},
+		{
+			name: &quot;Deve retornar http.StatusOk e falso, se número não for primo&quot;,
+			args: func(*testing.T) args {
+				req, err := http.NewRequest(&quot;GET&quot;, &quot;/check-is-prime&quot;, nil)
+				if err != nil {
+					t.Fatalf(&quot;falha em gerar requisição de teste: %s&quot;, err.Error())
+				}
+
+				q := req.URL.Query()
+				q.Add(&quot;number&quot;, &quot;1&quot;)
+				req.URL.RawQuery = q.Encode()
+
+				return args{
+					req: req,
+				}
+			},
+			wantCode: http.StatusOK,
+			wantBody: &quot;false&quot;,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tArgs := tt.args(t)
+			resp := httptest.NewRecorder()
+			handler.ServeHTTP(resp, tArgs.req)
+
+			if resp.Result().StatusCode != tt.wantCode {
+				t.Fatalf(&quot;código de resposta http diferente do esperado, recebido: %d, esperava-se: %d&quot;, resp.Result().StatusCode, tt.wantCode)
+			}
+
+			if resp.Body.String() != tt.wantBody {
+				t.Fatalf(&quot;body http diferente do esperado, recebido: %s, esperava-se: %s&quot;, resp.Body.String(), tt.wantBody)
+			}
+
+		})
+	}
+}
+</code></pre>
+<h2 id="conclusão">Conclusão</h2>
+<pre><code class="language-go">=== RUN   Test_IsPrimeHandler
+=== RUN   Test_IsPrimeHandler/Deve_retornar_http.StatusBadRequest_se_número_for_inválido
+=== RUN   Test_IsPrimeHandler/Deve_retornar_http.StatusOk_e_verdadeiro,_se_número_for_primo
+=== RUN   Test_IsPrimeHandler/Deve_retornar_http.StatusOk_e_falso,_se_número_não_for_primo
+--- PASS: Test_IsPrimeHandler (0.00s)
+    --- PASS: Test_IsPrimeHandler/Deve_retornar_http.StatusBadRequest_se_número_for_inválido (0.00s)
+    --- PASS: Test_IsPrimeHandler/Deve_retornar_http.StatusOk_e_verdadeiro,_se_número_for_primo (0.00s)
+    --- PASS: Test_IsPrimeHandler/Deve_retornar_http.StatusOk_e_falso,_se_número_não_for_primo (0.00s)
+PASS
+coverage: 83.3% of statements
+ok      github.com/nicolascb/blog-posts/1-http-api-test 0.003s  coverage: 83.3% of statements
+</code></pre>
+
+  </main>
+  <div id="disqus-container">
+  
+    <button id="disqus-button" onclick="showComments()"></button>
+    <div id="disqus-comments">
+      
+      
+      
+        <div id="disqus_thread">
+        </div>
+        <script type="application/javascript">
+          function showComments() {
+            // Config
+var disqus_config = function () {
+};
+// Build and append comments 
+var d = document;
+var s = d.createElement('script');
+s.async = true;
+s.src = '//' + "nicolascb" + '.disqus.com/embed.js';
+s.setAttribute('data-timestamp', + new Date());
+(d.head || d.body).appendChild(s);
+            // Remove button
+var disqusButton = document.getElementById('disqus-button');
+disqusButton.parentNode.removeChild(disqusButton); 
+// Un-hide comments
+var disqusComments = document.getElementById('disqus-comments');
+disqusComments.style.display = 'block'; 
+          }
+        </script>
+      
+      <noscript></noscript>
+    </div>
+  
+</div>
+
 
           
             <footer role="contentinfo">
