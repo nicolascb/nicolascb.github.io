@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
   <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,7 +49,7 @@
 </head>
 
   <body>
-    <a href="#main"></a>
+    <a href="#main">skip to content</a>
     <noscript>
   <style>
     body {
@@ -164,12 +164,12 @@
       </p>
     </div>
     <nav id="patterns-nav" class="patterns" role="navigation">
-  <h2 class="vh"></h2>
+  <h2 class="vh">Main navigation</h2>
   <button id="menu-button" aria-expanded="false">
     <svg viewBox="0 0 50 50" aria-hidden="true" focusable="false">
       <use xlink:href="#menu"></use>
     </svg>
-    
+    Menu
   </button>
   
   <ul id="patterns-list">
@@ -246,7 +246,7 @@
     <div class="date">
       
       
-      <strong> </strong>Jan 16, 2021
+      <strong>Publish date: </strong>Jan 16, 2021
       
         
       
@@ -254,8 +254,8 @@
 
     
       <div class="tags">
-        <strong> </strong>
-        <ul aria-label="">
+        <strong>Tags: </strong>
+        <ul aria-label="tags">
           
             <li>
               <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
@@ -281,7 +281,7 @@
       
 
   <nav class="toc" aria-labelledby="toc-heading">
-    <h2 id="toc-heading"></h2>
+    <h2 id="toc-heading">Table of contents</h2>
     <ol>
       
         <li>
@@ -606,7 +606,7 @@ ok      github.com/nicolascb/blog-posts/1-http-api-test 0.003s  coverage: 83.3% 
   </main>
   <div id="disqus-container">
   
-    <button id="disqus-button" onclick="showComments()"></button>
+    <button id="disqus-button" onclick="showComments()">Show comments</button>
     <div id="disqus-comments">
       
       
@@ -634,7 +634,7 @@ disqusComments.style.display = 'block';
           }
         </script>
       
-      <noscript></noscript>
+      <noscript>Enable JavaScript to view Disqus comments.</noscript>
     </div>
   
 </div>
@@ -646,7 +646,7 @@ disqusComments.style.display = 'block';
   style="display: none;"
   >
     <label for="themer">
-       <input type="checkbox" id="themer" class="vh">
+      dark theme: <input type="checkbox" id="themer" class="vh">
       
       <span aria-hidden="true"></span>
     </label>
