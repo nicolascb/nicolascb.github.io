@@ -3,11 +3,33 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://nicolascb.github.io/tags/golang/</loc>
+    <lastmod>2021-01-16T22:07:00-03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://nicolascb.github.io/</loc>
+    <lastmod>2021-01-16T22:07:00-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nicolascb.github.io/post/</loc>
+    <lastmod>2021-01-16T22:07:00-03:00</lastmod>
   </url>
   
   <url>
     <loc>https://nicolascb.github.io/tags/</loc>
+    <lastmod>2021-01-16T22:07:00-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nicolascb.github.io/testando-handlers-http-em-go/</loc>
+    <lastmod>2021-01-16T22:07:00-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://nicolascb.github.io/tags/testing/</loc>
+    <lastmod>2021-01-16T22:07:00-03:00</lastmod>
   </url>
   
 </urlset>

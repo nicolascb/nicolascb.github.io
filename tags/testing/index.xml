@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Nicolas Barbosa - Golang Developer</title>
-    <link>https://nicolascb.github.io/</link>
-    <description>Recent content on Nicolas Barbosa - Golang Developer</description>
+    <title>testing on Nicolas Barbosa - Golang Developer</title>
+    <link>https://nicolascb.github.io/tags/testing/</link>
+    <description>Recent content in testing on Nicolas Barbosa - Golang Developer</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
-    <lastBuildDate>Sat, 16 Jan 2021 22:07:00 -0300</lastBuildDate><atom:link href="https://nicolascb.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 16 Jan 2021 22:07:00 -0300</lastBuildDate><atom:link href="https://nicolascb.github.io/tags/testing/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Testando handlers HTTP em Go</title>
       <link>https://nicolascb.github.io/testando-handlers-http-em-go/</link>
