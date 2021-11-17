@@ -6,7 +6,16 @@
     <description>Recent content in Tags on Nicolas Barbosa - Golang Developer</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
-    <lastBuildDate>Sat, 16 Jan 2021 22:07:00 -0300</lastBuildDate><atom:link href="https://nicolascb.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 13 Nov 2021 22:16:23 -0300</lastBuildDate><atom:link href="https://nicolascb.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>vim</title>
+      <link>https://nicolascb.github.io/tags/vim/</link>
+      <pubDate>Sat, 13 Nov 2021 22:16:23 -0300</pubDate>
+      
+      <guid>https://nicolascb.github.io/tags/vim/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>golang</title>
       <link>https://nicolascb.github.io/tags/golang/</link>

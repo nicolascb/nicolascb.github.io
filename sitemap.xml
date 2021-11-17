@@ -1,35 +1,29 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
-  <url>
-    <loc>https://nicolascb.github.io/tags/golang/</loc>
-    <lastmod>2021-01-16T22:07:00-03:00</lastmod>
-  </url>
-  
   <url>
     <loc>https://nicolascb.github.io/</loc>
-    <lastmod>2021-01-16T22:07:00-03:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2021-11-13T22:16:23-03:00</lastmod>
+  </url><url>
     <loc>https://nicolascb.github.io/post/</loc>
-    <lastmod>2021-01-16T22:07:00-03:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2021-11-13T22:16:23-03:00</lastmod>
+  </url><url>
     <loc>https://nicolascb.github.io/tags/</loc>
-    <lastmod>2021-01-16T22:07:00-03:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2021-11-13T22:16:23-03:00</lastmod>
+  </url><url>
+    <loc>https://nicolascb.github.io/tags/vim/</loc>
+    <lastmod>2021-11-13T22:16:23-03:00</lastmod>
+  </url><url>
+    <loc>https://nicolascb.github.io/vim-background-toggle/</loc>
+    <lastmod>2021-11-13T22:16:23-03:00</lastmod>
+  </url><url>
+    <loc>https://nicolascb.github.io/tags/golang/</loc>
+    <lastmod>2021-01-18T15:26:09-03:00</lastmod>
+  </url><url>
     <loc>https://nicolascb.github.io/testando-handlers-http-em-go/</loc>
-    <lastmod>2021-01-16T22:07:00-03:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2021-01-18T15:26:09-03:00</lastmod>
+  </url><url>
     <loc>https://nicolascb.github.io/tags/testing/</loc>
-    <lastmod>2021-01-16T22:07:00-03:00</lastmod>
+    <lastmod>2021-01-18T15:26:09-03:00</lastmod>
   </url>
-  
 </urlset>
