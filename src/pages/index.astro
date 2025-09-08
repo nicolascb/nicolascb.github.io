@@ -1,15 +1,16 @@
 ---
-import { getCollection } from "astro:content";
-import Layout from "@layouts/Layout.astro";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
-import LinkButton from "@components/LinkButton.astro";
-import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
+import Footer from "@components/Footer.astro";
+import Header from "@components/Header.astro";
+import Hr from "@components/Hr.astro";
+import LinkButton from "@components/LinkButton.astro";
+import ProjectCard from "@components/ProjectCard.astro";
 import Socials from "@components/Socials.astro";
+import { SOCIALS } from "@config";
+import Layout from "@layouts/Layout.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import slugify from "@utils/slugify";
-import { SOCIALS } from "@config";
+import { getCollection } from "astro:content";
 
 const posts = await getCollection("blog");
 
@@ -17,13 +18,17 @@ const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 
 const socialCount = SOCIALS.filter(social => social.active).length;
+
+import { projects as allProjects } from "@assets/projects";
+const projects = allProjects.slice(0, 3);
+
 ---
 
 <Layout>
   <Header />
   <main id="main-content">
     <section id="hero">
-      <h1>Hola!</h1>
+      <h1>Nicolas Barbosa</h1>
       <a
         target="_blank"
         href="/rss.xml"
@@ -40,14 +45,14 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         </svg>
       </a>
 
-      <p>Eu sou Nicolas Barbosa, atualmente tech lead na Fretebras.</p>
-      <p>
+      <h2>Atualmente Staff Engineer na <a href="https://www.fretebras.com.br/">Fretebras</a>, a maior plataforma de transporte rodoviário de cargas do Brasil.</h2>
+      <br />
+      <h3>
         Nesse espaço compartilho minhas opiniões e notas do que aprendi nos
         últimos anos.
-      </p>
-      <br />
-      <p>
-        <p>Tags: opensource, golang, linux, software engineer, vim</p>
+      </h3>
+      <p> 
+        <p><b>Tags:</b> opensource, golang, linux, software engineer, vim</p>
         {
           // only display if at least one social link is enabled
           socialCount > 0 && (
@@ -61,7 +66,26 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 
       <Hr />
 
-      {
+      <section id="projects">
+        <h2>Projetos</h2>
+        <ul>
+          {projects.map(project => <ProjectCard {...project} />)}
+        </ul>
+        <div class="all-projects-btn-wrapper">
+          <LinkButton href="/projects">
+            Ver todos
+            <svg xmlns="http://www.w3.org/2000/svg"
+              ><path
+                d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+              ></path>
+            </svg>
+          </LinkButton>
+        </div>
+      </section>
+
+      <Hr />
+
+      <!-- {
         featuredPosts.length > 0 && (
           <>
             <section id="featured">
@@ -79,10 +103,10 @@ const socialCount = SOCIALS.filter(social => social.active).length;
             <Hr />
           </>
         )
-      }
+      } -->
 
       <section id="recent-posts">
-        <h2>Recent Posts</h2>
+        <h2>Últimos posts</h2>
         <ul>
           {
             sortedPosts.map(
@@ -99,7 +123,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         </ul>
         <div class="all-posts-btn-wrapper">
           <LinkButton href="/posts">
-            All Posts
+            Ver todos
             <svg xmlns="http://www.w3.org/2000/svg"
               ><path
                 d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
@@ -139,14 +163,17 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 
     /* ===== Featured & Recent Posts Sections ===== */
     #featured,
-    #recent-posts {
+    #recent-posts,
+    #projects {
       @apply pb-6 pt-12;
     }
     #featured h2,
-    #recent-posts h2 {
+    #recent-posts h2,
+    #projects h2 {
       @apply text-2xl font-semibold tracking-wide;
     }
-    .all-posts-btn-wrapper {
+    .all-posts-btn-wrapper,
+    .all-projects-btn-wrapper {
       @apply my-8 text-center;
     }
   </style>
