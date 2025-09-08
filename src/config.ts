@@ -4,7 +4,7 @@ export const SITE: Site = {
   website: "https://nicolascb.blog",
   author: "Nicolas Barbosa",
   desc: "tech notes",
-  title: "Nicolas Barbosa",
+  title: "nicolascb",
   ogImage: "astropaper-og.jpg",
   lightAndDarkMode: true,
   postPerPage: 5,
