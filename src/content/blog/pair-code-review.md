@@ -1,16 +1,11 @@
 ---
 title: Promovendo uma cultura de pair code review
-author: Nicolas Barbosa
-pubDatetime: 2023-08-21T22:07:00-03:00
-postSlug: pair-code-review
-featured: true
-draft: false
-tags:
-  - code-review
-  - techlead
-  - agile
-ogImage: ""
 description: Buscando estratégias para melhorar o processo de code review
+date: 2023-08-21 22:07:00-03:00
+tags:
+- code-review
+- techlead
+- agile
 ---
 
 # Promovendo uma cultura de pair code review

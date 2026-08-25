@@ -1,17 +1,10 @@
 ---
 title: Recarregar certificado TLS dinamicamente em Go
-author: Nicolas Barbosa
-pubDatetime: 2023-10-04T22:07:00-03:00
-postSlug: golang-reload-certs-dinamically
-featured: true
-draft: false
-tags:
-  - golang
-ogImage: ""
 description: Dica de como recarregar certificado TLS sem precisar reiniciar a API
+date: 2023-10-04 22:07:00-03:00
+tags:
+- golang
 ---
-
-# Renovando certificado TLS dinamicamente em Go
 
 ## Introdução
 

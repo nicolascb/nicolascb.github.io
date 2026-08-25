@@ -1,21 +1,24 @@
-import rss from "@astrojs/rss";
-import { getCollection } from "astro:content";
-import getSortedPosts from "@utils/getSortedPosts";
-import slugify from "@utils/slugify";
-import { SITE } from "@config";
+import rss from '@astrojs/rss';
+import { getCollection } from 'astro:content';
+import type { APIContext } from 'astro';
+import { postSlug } from '../lib/posts';
 
-export async function get() {
-  const posts = await getCollection("blog");
-  const sortedPosts = getSortedPosts(posts);
+export async function GET(context: APIContext) {
+  const posts = (await getCollection('blog'))
+    .filter((post) => !post.data.draft)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
   return rss({
-    title: SITE.title,
-    description: SITE.desc,
-    site: SITE.website,
-    items: sortedPosts.map(({ data }) => ({
-      link: `posts/${slugify(data)}`,
-      title: data.title,
-      description: data.description,
-      pubDate: new Date(data.pubDatetime),
+    title: 'nicolascb — Nicolas Barbosa',
+    description:
+      'Notas e aprendizados de um desenvolvedor de software.',
+    site: context.site!,
+    items: posts.map((post) => ({
+      title: post.data.title,
+      description: post.data.description,
+      pubDate: post.data.date,
+      link: `/blog/${postSlug(post)}/`,
     })),
+    customData: '<language>pt-BR</language>',
   });
 }

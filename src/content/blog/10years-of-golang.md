@@ -1,14 +1,9 @@
 ---
 title: Completei 10 anos trabalhando com Golang
-author: Nicolas Barbosa
-pubDatetime: 2025-09-08T08:07:00-03:00
-postSlug: 10years-of-golang
-featured: true
-draft: false
-tags:
-  - golang
-ogImage: ""
 description: Desafios e aprendizados ao longo de uma década com Go
+date: 2025-09-08 08:07:00-03:00
+tags:
+- golang
 ---
 
 Há 10 anos atrás tive meu primeiro contato com a linguagem `Go`, desde então, toda minha trajetória profissional se entrelaça com essa linguagem.
@@ -23,7 +18,7 @@ Há 10 anos atrás tive meu primeiro contato com a linguagem `Go`, desde então,
 - [Contribuições open source](#contribuições-open-source)
 - [Resumo do que aprendi nesses 10 anos com Go](#resumo-do-que-aprendi-nesses-10-anos-com-go)
 
-### Início da jornada
+## Início da jornada
 
 Em 2015 eu estava trabalhando como Analista Linux na [America Net](https://www.linkedin.com/company/americanet/) (hoje Vero), desenvolvia e dava manutenção em muitos scripts em `PHP`, `Perl` e `Shell scripts`.
 
@@ -33,7 +28,7 @@ Eu atuava como desenvolvedor basicamente em dois cenários: projetos internos e 
 
 Trabalhar com `Linux` sempre foi meu desejo, eu já havia me certificado com a LPIC-1 e em breve planejava a LPIC-2 e LPIC-3, até conhecer Golang...
 
-### Primeiro contato com a linguagem
+## Primeiro contato com a linguagem
 
 Quando trabalhamos com VoIP, tudo fica muito sensível e perceptível a nível de usuário.
 Pois imagina, se você hoje acessar um site, cadastrar algum formulário ou simplesmente fazer login em alguma plataforma, é ok se algum processo demorar alguns segundos. Porém, quando falamos de alguns segundos de atraso em chamadas telefônicas, isso é praticamente a indisponibilidade do sistema, um caos, fica impossível conversar. E vocês nem imaginam o quanto irritadas as pessoas ficam quando não conseguem completar uma ligação.
@@ -42,7 +37,7 @@ Foi nesse cenário de caos, que conheci `Golang`.
 
 Eu tinha um desafio: melhorar a performance do canal de atendimento da matriz.
 
-#### Contexto da escolha da linguagem
+### Contexto da escolha da linguagem
 
 O canal de atendimento da matriz foi meu primeiro grande projeto, era escrita em uma linguagem específica do Asterisk, onde de forma imperativa vamos colocando as instruções e que são executadas de forma sequencial.
 
@@ -67,7 +62,7 @@ No nosso caso, a URA era bem complexa e com muitos recursos avançados, se conec
 
 Esses scripts faziam chamadas a outros serviços (muitos usando SOAP), se conectavam via telnet à equipamentos de rede e manipulavam dados em bancos `MySQL` e `SQLite`.
 
-#### O problema que queríamos resolver
+### O problema que queríamos resolver
 
 Bom, agora imagina esse canal de atendimento em dias de rompimento de fibra. Agora imagina esse rompimento de fibra em uma grande cidade, como São Paulo.
 
@@ -93,7 +88,7 @@ Além da refatoração dos scripts, todos os novos projetos internos que eu dese
 
 Foi nessa época que eu construí o [NSSH](github.com/nicolascb/nssh), um gerenciador de conexões SSH, que ajudou muito a equipe a gerenciar o acesso aos servidores.
 
-### Como era a linguagem em 2015
+## Como era a linguagem em 2015
 
 A linguagem já tinha o DNA de simplicidade e eficiência, `goroutines` e `channels` já eram o charme da linguagem.
 
@@ -106,7 +101,7 @@ Na prática, era uma mistura de disciplina, gambiarra e paciência.
 De lá pra cá, o `Go` amadureceu muito. E assim como a linguagem, eu também fui amadurecendo.
 É sobre esses aprendizados que quero compartilhar agora.
 
-### Aprendizados ao longo da jornada
+## Aprendizados ao longo da jornada
 
 A minha linha do tempo de aprendizado em Go, se mistura com meu nível de conhecimento em desenvolvimento de software e será muito difícil escrever tudo o que aprendi nesses 10 anos, mas vou tentar destacar os pontos mais importantes.
 
@@ -130,7 +125,7 @@ A facilidade de organizar testes unitários em tabelas vai até certo ponto, se 
 
 Ferramentas nativas para linter, formatação, documentação, testes e profiling, tornam o desenvolvimento mais produtivo.
 
-### Filosofia de simplicidade
+## Filosofia de simplicidade
 
 Ao longo do tempo, percebi que buscar soluções simples não se limita apenas à lógica do programa, mas também se reflete em pequenos detalhes que tornam o código mais organizado e fácil de entender. Um exemplo disso é a forma como declaramos constantes.
 
@@ -183,7 +178,7 @@ http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
 })
 ```
 
-### Contribuições open source
+## Contribuições open source
 
 Esse é um tema que eu gostaria de ter contribuído mais, mas a verdade é que nunca consegui me dedicar o suficiente para contribuir com projetos open source em `Go`.
 
@@ -198,7 +193,7 @@ Também consegui contribuir com alguns projetos:
 - [c9s/goprocinfo](https://github.com/c9s/goprocinfo/pulls?q=is%3Apr+is%3Aclosed+author%3Anicolascb)
 - [projectdiscovery/naabu](https://github.com/projectdiscovery/naabu/pull/8)
 
-### Resumo do que aprendi nesses 10 anos com Go
+## Resumo do que aprendi nesses 10 anos com Go
 
 Olhando pra trás, vejo que não foram só 10 anos com `Go`, foram 10 anos aprendendo a pensar de forma mais simples e eficiente.
 
