@@ -1,0 +1,120 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../components/Layout.astro';
+import { formatPostDate, postSlug } from '../../lib/posts';
+import { slugifyTag } from '../../lib/tags';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts
+    .filter((post) => !post.data.draft)
+    .map((post) => {
+      const slug = postSlug(post);
+      return {
+        params: { slug },
+        props: { post, slug },
+      };
+    });
+}
+
+const { post, slug } = Astro.props;
+const { Content, headings } = await render(post);
+const sectionHeadings = headings.filter((heading) => heading.depth === 2);
+// Tags whose slug is empty have no archive page; skip their chips.
+const tags = post.data.tags.filter((tag) => slugifyTag(tag) !== '');
+
+const postSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  url: new URL(`/blog/${slug}/`, Astro.site).toString(),
+  author: {
+    '@type': 'Person',
+    name: 'Nicolas Barbosa',
+    url: 'https://nicolascb.github.io/about/',
+  },
+  // Escape < so a post title/description can never close the <script> tag.
+}).replace(/</g, '\\u003c');
+---
+
+<Layout
+  title={`${post.data.title} — Nicolas Barbosa`}
+  description={post.data.description}
+  canonicalPath={`/blog/${slug}/`}
+  ogType="article"
+>
+  <script type="application/ld+json" is:inline set:html={postSchema} />
+  <main class="content-shell">
+    <div class="article-layout section" style="max-width: var(--max); padding-inline: 1.25rem;">
+      <aside class="article-toc" aria-label="Article sections">
+        {sectionHeadings.length > 0 && (
+          <nav>
+            {sectionHeadings.map((heading) => (
+              <a href={`#${heading.slug}`} data-heading-link={heading.slug}>{heading.text}</a>
+            ))}
+          </nav>
+        )}
+      </aside>
+
+      <article class="article-shell" data-pagefind-body>
+        <header class="article-header">
+          <p class="post-meta">
+            <time datetime={post.data.date.toISOString()}>
+              {formatPostDate(post.data.date)}
+            </time>
+            {/* data-pagefind-ignore keeps tag labels out of the search index. */}
+            {tags.map((tag) => (
+              <a href={`/tags/${slugifyTag(tag)}/`} data-pagefind-ignore>#{tag}</a>
+            ))}
+          </p>
+          <h1>{post.data.title}</h1>
+          <p>{post.data.description}</p>
+        </header>
+        <div class="article-prose">
+          <Content />
+        </div>
+
+      </article>
+    </div>
+  </main>
+
+  <script>
+    let tocObserver: IntersectionObserver | undefined;
+
+    function initToc() {
+      tocObserver?.disconnect();
+      const headings = Array.from(document.querySelectorAll('.article-prose h2[id]'));
+      const links = new Map(
+        Array.from(document.querySelectorAll('[data-heading-link]')).map((link) => [
+          link.getAttribute('data-heading-link'),
+          link,
+        ]),
+      );
+      if (headings.length === 0 || links.size === 0) return;
+
+      function setActive(id: string) {
+        for (const link of links.values()) link.removeAttribute('aria-current');
+        links.get(id)?.setAttribute('aria-current', 'true');
+      }
+
+      setActive(headings[0].id);
+      tocObserver = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+          if (visible?.target instanceof HTMLElement) setActive(visible.target.id);
+        },
+        { rootMargin: '-18% 0px -68% 0px', threshold: 0 },
+      );
+      for (const heading of headings) tocObserver.observe(heading);
+    }
+
+    initToc();
+    // Module scripts run once per session; re-init after view-transition
+    // navigations (e.g. post → post through the archive tree).
+    document.addEventListener('astro:page-load', initToc);
+  </script>
+</Layout>

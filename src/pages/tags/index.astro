@@ -1,24 +1,29 @@
 ---
-import { getCollection } from "astro:content";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
-import Layout from "@layouts/Layout.astro";
-import Main from "@layouts/Main.astro";
-import Tag from "@components/Tag.astro";
-import getUniqueTags from "@utils/getUniqueTags";
-import { SITE } from "@config";
+import { getCollection } from 'astro:content';
+import Layout from '../../components/Layout.astro';
+import TypedLede from '../../components/TypedLede.astro';
+import { getAllTags } from '../../lib/tags';
 
-const posts = await getCollection("blog");
-
-let tags = getUniqueTags(posts);
+const tags = getAllTags(await getCollection('blog'));
 ---
 
-<Layout title={`Tags | ${SITE.title}`}>
-  <Header activeNav="tags" />
-  <Main pageTitle="Tags">
-    <ul>
-      {tags.map(tag => <Tag name={tag} size="lg" />)}
-    </ul>
-  </Main>
-  <Footer />
+<Layout
+  title="Tags — Nicolas Barbosa"
+  description="Posts grouped by tag."
+  canonicalPath="/tags/"
+>
+  <main class="content-shell">
+    <section class="page-hero">
+      <h1 class="visually-hidden">Tags</h1>
+      <TypedLede text="Posts grouped by tag." />
+    </section>
+
+    <section class="section" aria-label="Tags">
+      <div class="tag-cloud">
+        {tags.map(({ slug, name, count }) => (
+          <a class="tag" href={`/tags/${slug}/`}>#{name} {count > 0 && <span class="tag-count">{count}</span>}</a>
+        ))}
+      </div>
+    </section>
+  </main>
 </Layout>

@@ -1,15 +1,10 @@
 ---
 title: Testando handlers HTTP em Go
-author: Nicolas Barbosa
-pubDatetime: 2021-01-16T22:07:00-03:00
-postSlug: golang-http-handlers-testing
-featured: true
-draft: false
-tags:
-  - golang
-  - testing
-ogImage: ""
 description: Criamos nossa primeira API em Go e agora? Como podemos testar?
+date: 2021-01-16 22:07:00-03:00
+tags:
+- golang
+- testing
 ---
 
 # Testando handlers HTTP em Go
