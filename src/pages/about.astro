@@ -1,110 +1,36 @@
 ---
-import Layout from "../components/Layout.astro";
-import SkillsMarquee from "../components/SkillsMarquee.astro";
-import TypedLede from "../components/TypedLede.astro";
+import { getEntry, render } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import config from "@/config";
+
+const about = await getEntry("pages", "about");
+
+if (!about) {
+  throw new Error(
+    "Missing content entry: `about.md` or `about.mdx` in `src/content/pages/`"
+  );
+}
+
+const { Content } = await render(about);
 ---
 
 <Layout
-  title="About — Nicolas Barbosa"
-  description="Senior Staff Engineer @frete.com"
-  canonicalPath="/about/"
+  title={`${about.data.title} | ${config.site.title}`}
+  description={about.data.description}
+  ogImage={about.data.ogImage}
+  canonicalURL={about.data.canonicalURL}
 >
-  <main class="content-shell" data-pagefind-body>
-    <div class="page-hero">
-      <h1 class="visually-hidden">About</h1>
-      <TypedLede
-        text="Pai do João e nas horas vagas Senior Staff Engineer @frete.com"
-      />
-    </div>
+  <Header />
 
-    <div class="section" style="max-width: var(--max);">
-      <div class="about-grid">
-        <div class="about-me">
-          <div class="about-card">
-            <h3>About</h3>
-            <div class="about-prose">
-              <p>
-                Eu sou Nícolas Barbosa, tenho 34 anos e atualmente trabalho como
-                Senior Staff Engineer na <a href="https://frete.com"
-                  >@frete.com</a
-                >.
-              </p>
-              <p>
-                Atuo em Engenharia de Software há mais de 15 anos, tendo
-                construído coisas legais em empresas como Atos, Pagar.me,
-                Dinamize e America Net.
-              </p>
-              <p>
-                No momento atual atuo como referência técnica cross-team e
-                lidero uma iniciativa de construir uma plataforma interna de
-                agentes de IA.
-              </p>
-              <p>
-                Trabalhei com Golang por mais de 10 anos e acho que o blog vai
-                se misturar entre o que aprendi durante esse período com o que
-                venho construindo atualmente, dentro desse universo de IA.
-              </p>
-              <p>
-                Sempre lembrando que aqui serão as minhas opiniões e notas do
-                que aprendi nos últimos anos.
-              </p>
-            </div>
-          </div>
-        </div>
+  <Breadcrumb />
 
-        <aside>
-          <div class="sidebar-card">
-            <h3>Projetos pessoais</h3>
-            <div class="edu-entry">
-              <p class="edu-degree">
-                <a href="https://onmock.dev" target="_blank" rel="noopener"
-                  >onmock.dev</a
-                >
-              </p>
-              <p class="edu-school">
-                Ferramenta online para desenvolvimento de mocks em APIs REST.
-              </p>
-            </div>
-            <div class="edu-entry">
-              <p class="edu-degree">
-                <a
-                  href="https://github.com/nicolascb/camarada.vim"
-                  target="_blank"
-                  rel="noopener">camarada.vim</a
-                >
-              </p>
-              <p class="edu-school">Estilo de tema para o editor Vim.</p>
-            </div>
-            <div class="edu-entry">
-              <p class="edu-degree">
-                <a
-                  href="https://github.com/nicolascb/vault-aws-provider"
-                  target="_blank"
-                  rel="noopener">vault-aws-provider</a
-                >
-              </p>
-              <p class="edu-school">
-                Implementação de Vault como provider para AWS credentials em
-                Go.
-              </p>
-            </div>
-            <div class="edu-entry">
-              <p class="edu-degree">
-                <a
-                  href="https://github.com/nicolascb/nssh"
-                  target="_blank"
-                  rel="noopener">nssh</a
-                >
-              </p>
-              <p class="edu-school">
-                Gerenciador de conexões SSH escrito em Go.
-              </p>
-            </div>
-          </div>
-        </aside>
-      </div>
+  <Main pageTitle={about.data.title} class="app-prose">
+    <Content />
+  </Main>
 
-      <SkillsMarquee />
-    </div>
-  </main>
+  <Footer />
 </Layout>
