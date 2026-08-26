@@ -28,6 +28,16 @@ const rssHref = getRelativeLocaleUrl(
   Astro.currentLocale ?? config.site.lang,
   "rss.xml"
 );
+const gaId = site.googleAnalyticsId;
+const gtagBootstrap =
+  import.meta.env.PROD && gaId
+    ? `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+window.gtag = gtag;
+window.__GA_ID = ${JSON.stringify(gaId)};
+gtag("js", new Date());
+gtag("config", ${JSON.stringify(gaId)}, { send_page_view: false });`
+    : "";
 ---
 
 <!doctype html>
@@ -96,23 +106,14 @@ const rssHref = getRelativeLocaleUrl(
     }
 
     {
-      import.meta.env.PROD && site.googleAnalyticsId && (
+      gtagBootstrap && (
         <>
           <script
             is:inline
             async
-            src={`https://www.googletagmanager.com/gtag/js?id=${site.googleAnalyticsId}`}
-          ></script>
-          <script is:inline define:vars={{ gaId: site.googleAnalyticsId }}>
-            window.dataLayer = window.dataLayer || [];
-            function gtag() {
-              dataLayer.push(arguments);
-            }
-            window.gtag = gtag;
-            window.__GA_ID = gaId;
-            gtag("js", new Date());
-            gtag("config", gaId, { send_page_view: false });
-          </script>
+            src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+          />
+          <script is:inline set:html={gtagBootstrap} />
         </>
       )
     }

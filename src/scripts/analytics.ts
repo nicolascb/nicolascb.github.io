@@ -1,3 +1,5 @@
+export {};
+
 declare global {
   interface Window {
     dataLayer?: unknown[];
@@ -8,7 +10,9 @@ declare global {
 
 function isLocalHost(): boolean {
   const { hostname } = window.location;
-  return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+  return (
+    hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1"
+  );
 }
 
 function sendPageView(): void {
