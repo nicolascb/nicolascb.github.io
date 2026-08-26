@@ -1,31 +1,31 @@
 ---
-import { getCollection } from 'astro:content';
-import Layout from '../components/Layout.astro';
-import TypedLede from '../components/TypedLede.astro';
-import SkillsMarquee from '../components/SkillsMarquee.astro';
-import { formatPostDate, postSlug } from '../lib/posts';
+import { getCollection } from "astro:content";
+import Layout from "../components/Layout.astro";
+import SkillsMarquee from "../components/SkillsMarquee.astro";
+import TypedLede from "../components/TypedLede.astro";
+import { formatPostDate, postSlug } from "../lib/posts";
 
-const posts = (await getCollection('blog'))
+const posts = (await getCollection("blog"))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
 
 const personSchema = JSON.stringify({
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Nicolas Barbosa',
-  jobTitle: 'Staff Engineer',
-  url: 'https://nicolascb.github.io',
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Nicolas Barbosa",
+  jobTitle: "Staff Engineer",
+  url: "https://nicolascb.github.io",
   sameAs: [
-    'https://github.com/nicolascb',
-    'https://linkedin.com/in/nicolascb/',
+    "https://github.com/nicolascb",
+    "https://linkedin.com/in/nicolascb/",
   ],
   // Escape < so no value can ever close the inline <script> tag.
-}).replace(/</g, '\\u003c');
+}).replace(/</g, "\\u003c");
 ---
 
 <Layout
-  title="nicolascb — Nicolas Barbosa"
+  title="Nicolas Barbosa"
   description="Notas e aprendizados de um desenvolvedor de software."
   canonicalPath="/"
 >
@@ -37,20 +37,26 @@ const personSchema = JSON.stringify({
     </div>
 
     <section class="section" aria-label="Recent posts">
-      {posts.length === 0 ? (
-        <p class="empty-note">No posts yet, check back soon.</p>
-      ) : (
-        <nav class="commit-tree" aria-label="Recent posts">
-          <a class="commit-tree-head" href="/blog/" title="All posts">Blog</a>
-          {posts.map((post) => (
-            <a href={`/blog/${postSlug(post)}/`}>
-              {post.data.title}
-              <span class="commit-tree-date">{formatPostDate(post.data.date)}</span>
+      {
+        posts.length === 0 ? (
+          <p class="empty-note">No posts yet, check back soon.</p>
+        ) : (
+          <nav class="commit-tree" aria-label="Recent posts">
+            <a class="commit-tree-head" href="/blog/" title="All posts">
+              Blog
             </a>
-          ))}
-          <a href="/about/">About</a>
-        </nav>
-      )}
+            {posts.map((post) => (
+              <a href={`/blog/${postSlug(post)}/`}>
+                {post.data.title}
+                <span class="commit-tree-date">
+                  {formatPostDate(post.data.date)}
+                </span>
+              </a>
+            ))}
+            <a href="/about/">About</a>
+          </nav>
+        )
+      }
     </section>
 
     <SkillsMarquee />

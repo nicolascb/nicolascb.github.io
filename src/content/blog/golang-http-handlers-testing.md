@@ -7,8 +7,6 @@ tags:
 - testing
 ---
 
-# Testando handlers HTTP em Go
-
 ## Introdução
 
 Lembro que precisei fazer algumas pesquisas para construir testes para a minha primeira API escrita em Go, nesse post vou escrever um breve exemplo de como podemos utilizar o pacote `httptest` para testar nossos handlers http.  

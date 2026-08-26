@@ -8,8 +8,6 @@ tags:
 - agile
 ---
 
-# Promovendo uma cultura de pair code review
-
 O processo de _pair code review_, como o próprio nome já sugere, consiste na prática de revisão de código em pares.
 
 Diferente do _pair programming_, onde pessoas se organizam na fase de desenvolvimento da tarefa, o pair review acontece ao final desse desenvolvimento, quando a tarefa atinge a sua definição de pronto.
