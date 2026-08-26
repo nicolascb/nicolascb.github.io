@@ -76,11 +76,15 @@ const {
 const { Content } = await render(post);
 
 let ogImageUrl: string | undefined;
+let ogImageWidth: number | undefined;
+let ogImageHeight: number | undefined;
 
 if (typeof initOgImage === "string") {
   ogImageUrl = initOgImage;
 } else if (initOgImage?.src) {
   ogImageUrl = initOgImage.src;
+  ogImageWidth = initOgImage.width;
+  ogImageHeight = initOgImage.height;
 }
 
 if (!ogImageUrl && config.features.dynamicOgImage) {
@@ -100,6 +104,9 @@ const ogImage = ogImageUrl
   title={`${title} | ${config.site.title}`}
   description={description}
   ogImage={ogImage}
+  ogImageWidth={ogImageWidth}
+  ogImageHeight={ogImageHeight}
+  ogImageAlt={title}
   canonicalURL={canonicalURL}
   pubDatetime={pubDatetime}
   modDatetime={modDatetime}
