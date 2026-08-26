@@ -62,6 +62,7 @@ gtag("config", ${JSON.stringify(gaId)}, { send_page_view: false });`
   dir={site.dir ?? "ltr"}
   lang={Astro.currentLocale ?? site.lang}
   class="overflow-y-scroll scroll-smooth"
+  data-theme="light"
 >
   <head>
     <meta charset="UTF-8" />
@@ -141,21 +142,15 @@ gtag("config", ${JSON.stringify(gaId)}, { send_page_view: false });`
     }
 
     <!--
-      Inline FOUC-prevention script: sets data-theme on <html> before
-      the browser paints. Runs synchronously, no defer/async.
+      Keep the site on the light theme even if an old "theme" value
+      is still in localStorage or the OS prefers dark.
     -->
     <script is:inline>
       (function () {
-        const stored = localStorage.getItem("theme");
-        const prefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)"
-        ).matches;
-        const theme = stored ?? (prefersDark ? "dark" : "light");
+        localStorage.removeItem("theme");
         const root = document.firstElementChild;
-        root?.setAttribute("data-theme", theme);
-        root?.classList.toggle("dark", theme === "dark");
-        // Expose value so theme.ts can skip re-detection.
-        window.__theme = { value: theme };
+        root?.setAttribute("data-theme", "light");
+        root?.classList.remove("dark");
       })();
     </script>
 
